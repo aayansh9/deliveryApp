@@ -1,50 +1,41 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/model/orderModel.dart';
-import 'package:rescueeats/features/widgets/apiClients.dart';
+import 'package:rescueeats/core/services/api_service.dart';
 
+// 1. Define the Interface (Contract)
 // 1. Define the Interface (Contract)
 abstract class IOrderRepository {
   Future<List<OrderModel>> fetchOrders();
-  Future<void> updateOrderStatus(String orderId, OrderStatus status);
+  Future<void> updateOrderStatus(String orderId, String status);
   Future<void> placeOrder(OrderModel order);
 }
 
 // 2. Implement the Real Repository
 class OrderRepository implements IOrderRepository {
-  final ApiClient _apiClient;
+  final ApiService _apiService;
 
-  OrderRepository(this._apiClient);
+  OrderRepository(this._apiService);
 
   @override
   Future<List<OrderModel>> fetchOrders() async {
-    final response = await _apiClient.get('/orders');
-    final List<dynamic> data = response as List<dynamic>;
-    return data.map((json) => OrderModel.fromJson(json)).toList();
+    return await _apiService.getOrders();
   }
 
   @override
-  Future<void> updateOrderStatus(String orderId, OrderStatus status) async {
-    await _apiClient.patch('/orders/$orderId', data: {'status': status.name});
+  Future<void> updateOrderStatus(String orderId, String status) async {
+    await _apiService.updateOrderStatus(orderId, status);
   }
 
   @override
   Future<void> placeOrder(OrderModel order) async {
-    // Convert OrderModel to JSON if you have a toJson method, or manual map
-    await _apiClient.post(
-      '/orders',
-      data: {
-        'customerName': order.customerName,
-        'totalAmount': order.totalAmount,
-        'items': order.items,
-      },
-    );
+    await _apiService.createOrder(order);
   }
 }
 
 // 3. Providers
-final apiClientProvider = Provider((ref) => ApiClient());
+final apiServiceProvider = Provider((ref) => ApiService());
 
 final orderRepositoryProvider = Provider<IOrderRepository>((ref) {
-  final api = ref.watch(apiClientProvider);
+  final api = ref.watch(apiServiceProvider);
   return OrderRepository(api);
 });

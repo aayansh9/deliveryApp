@@ -114,16 +114,19 @@ class CartScreen extends ConsumerWidget {
                           onPressed: () {
                             final order = OrderModel(
                               id: 'ORD-${DateTime.now().millisecondsSinceEpoch}',
-                              customerName: "Current User",
-                              restaurantName: "Burger House",
+                              restaurantId: "654321", // Hardcoded for now as CartItem doesn't have it
                               deliveryAddress: "Lazimpat, Kathmandu",
                               totalAmount: notifier.totalAmount,
                               items: cartItems
                                   .map(
-                                    (e) => "${e.quantity}x ${e.menuItem.name}",
+                                    (e) => OrderItem(
+                                      menuId: e.menuItem.id,
+                                      quantity: e.quantity,
+                                    ),
                                   )
                                   .toList(),
-                              status: OrderStatus.pending,
+                              status: 'pending',
+                              paymentMethod: 'cod',
                               createdAt: DateTime.now(),
                             );
 

@@ -13,22 +13,28 @@ class OrderNotifier extends StateNotifier<List<OrderModel>> {
     state = [
       OrderModel(
         id: 'ORD-8852',
-        customerName: 'John Doe',
-        restaurantName: 'Burger King',
+        restaurantId: 'Burger King',
         deliveryAddress: '123 Maple Street',
         totalAmount: 24.50,
-        items: ['Double Whopper Meal', 'Onion Rings'],
-        status: OrderStatus.cooking,
+        items: [
+          const OrderItem(menuId: 'Double Whopper Meal', quantity: 1),
+          const OrderItem(menuId: 'Onion Rings', quantity: 1),
+        ],
+        status: 'cooking',
+        paymentMethod: 'cod',
         createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
       ),
       OrderModel(
         id: 'ORD-9941',
-        customerName: 'Jane Smith',
-        restaurantName: 'Pizza Hut',
+        restaurantId: 'Pizza Hut',
         deliveryAddress: '45 Broadway Ave',
         totalAmount: 32.00,
-        items: ['Large Pepperoni', 'Garlic Bread'],
-        status: OrderStatus.pending, // Waiting for restaurant
+        items: [
+          const OrderItem(menuId: 'Large Pepperoni', quantity: 1),
+          const OrderItem(menuId: 'Garlic Bread', quantity: 1),
+        ],
+        status: 'pending', // Waiting for restaurant
+        paymentMethod: 'cod',
         createdAt: DateTime.now().subtract(const Duration(minutes: 2)),
       ),
     ];
@@ -40,18 +46,18 @@ class OrderNotifier extends StateNotifier<List<OrderModel>> {
   }
 
   // FEATURE: Restaurant/Delivery updates status
-  void updateOrderStatus(String orderId, OrderStatus newStatus) {
+  void updateOrderStatus(String orderId, String newStatus) {
     state = [
       for (final order in state)
         if (order.id == orderId)
           OrderModel(
             id: order.id,
-            customerName: order.customerName,
-            restaurantName: order.restaurantName,
+            restaurantId: order.restaurantId,
             deliveryAddress: order.deliveryAddress,
             totalAmount: order.totalAmount,
             items: order.items,
             status: newStatus, // Update status
+            paymentMethod: order.paymentMethod,
             createdAt: order.createdAt,
           )
         else
@@ -70,7 +76,7 @@ final orderProvider = StateNotifierProvider<OrderNotifier, List<OrderModel>>((
 // 3. Helper Providers (Selectors) to filter data for specific roles
 final pendingOrdersProvider = Provider((ref) {
   final orders = ref.watch(orderProvider);
-  return orders.where((o) => o.status == OrderStatus.pending).toList();
+  return orders.where((o) => o.status == 'pending').toList();
 });
 
 final activeOrdersProvider = Provider((ref) {
@@ -78,13 +84,13 @@ final activeOrdersProvider = Provider((ref) {
   return orders
       .where(
         (o) =>
-            o.status != OrderStatus.delivered &&
-            o.status != OrderStatus.cancelled,
+            o.status != 'delivered' &&
+            o.status != 'cancelled',
       )
       .toList();
 });
 
 final readyForPickupProvider = Provider((ref) {
   final orders = ref.watch(orderProvider);
-  return orders.where((o) => o.status == OrderStatus.ready).toList();
+  return orders.where((o) => o.status == 'ready').toList();
 });

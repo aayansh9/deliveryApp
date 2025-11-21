@@ -24,7 +24,7 @@ class OrderController extends StateNotifier<AsyncValue<List<OrderModel>>> {
   // 2. Update Order Status (Optimistic Update)
   // "Optimistic" means we update the UI immediately for a snappy feel,
   // then rollback if the server fails.
-  Future<void> updateStatus(String orderId, OrderStatus newStatus) async {
+  Future<void> updateStatus(String orderId, String newStatus) async {
     final previousState = state; // Save copy for rollback
 
     // Optimistically update UI
@@ -34,13 +34,13 @@ class OrderController extends StateNotifier<AsyncValue<List<OrderModel>>> {
           if (order.id == orderId)
             OrderModel(
               id: order.id,
-              customerName: order.customerName,
-              restaurantName: order.restaurantName,
+              restaurantId: order.restaurantId,
               deliveryAddress: order.deliveryAddress,
               totalAmount: order.totalAmount,
               items: order.items,
               status: newStatus, // New Status
               createdAt: order.createdAt,
+              paymentMethod: order.paymentMethod,
             )
           else
             order,

@@ -165,8 +165,8 @@ class DeliveryDashboard extends ConsumerWidget {
                     final deliveryTasks = allOrders
                         .where(
                           (o) =>
-                              o.status == OrderStatus.ready ||
-                              o.status == OrderStatus.cooking,
+                              o.status == 'ready' ||
+                              o.status == 'cooking',
                         )
                         .toList();
 
@@ -222,7 +222,7 @@ class DeliveryDashboard extends ConsumerWidget {
                         else
                           ...deliveryTasks.map(
                             (order) => _buildModernDeliveryCard(
-                              restaurant: order.restaurantName,
+                              restaurant: order.restaurantId, // Using ID as name
                               distance: "2.4 km",
                               price:
                                   "Rs. ${(order.totalAmount * 0.15).toStringAsFixed(0)}",
@@ -270,7 +270,7 @@ class DeliveryDashboard extends ConsumerWidget {
     required String distance,
     required String price,
     required String address,
-    required OrderStatus status,
+    required String status,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),

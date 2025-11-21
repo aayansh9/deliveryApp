@@ -76,9 +76,9 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
         data: (orders) => TabBarView(
           controller: _tabController,
           children: [
-            _buildOrderList(orders, OrderStatus.pending),
-            _buildOrderList(orders, OrderStatus.cooking),
-            _buildOrderList(orders, OrderStatus.ready),
+            _buildOrderList(orders, 'pending'),
+            _buildOrderList(orders, 'cooking'),
+            _buildOrderList(orders, 'ready'),
           ],
         ),
       ),
@@ -175,7 +175,7 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
     );
   }
 
-  Widget _buildOrderList(List<OrderModel> allOrders, OrderStatus status) {
+  Widget _buildOrderList(List<OrderModel> allOrders, String status) {
     final orders = allOrders.where((o) => o.status == status).toList();
 
     if (orders.isEmpty) {
@@ -186,7 +186,7 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
             Icon(Icons.check_circle_outline, size: 64, color: Colors.grey[300]),
             const SizedBox(height: 16),
             Text(
-              "No orders in ${status.name}",
+              "No orders in $status",
               style: TextStyle(color: Colors.grey[500], fontSize: 16),
             ),
           ],
@@ -273,7 +273,7 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      order.customerName,
+                      "Customer", // Placeholder as customerName is removed
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -300,9 +300,9 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
                             borderRadius: BorderRadius.circular(4),
                             border: Border.all(color: Colors.grey[300]!),
                           ),
-                          child: const Text(
-                            "1x",
-                            style: TextStyle(
+                          child: Text(
+                            "${item.quantity}x",
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
                             ),
@@ -311,7 +311,7 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            item,
+                            item.menuId, // Using menuId as name for now
                             style: const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -328,15 +328,15 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      OrderStatus nextStatus = OrderStatus.pending;
-                      if (order.status == OrderStatus.pending) {
-                        nextStatus = OrderStatus.cooking;
+                      String nextStatus = 'pending';
+                      if (order.status == 'pending') {
+                        nextStatus = 'cooking';
                       }
-                      if (order.status == OrderStatus.cooking) {
-                        nextStatus = OrderStatus.ready;
+                      if (order.status == 'cooking') {
+                        nextStatus = 'ready';
                       }
-                      if (order.status == OrderStatus.ready) {
-                        nextStatus = OrderStatus.pickedUp;
+                      if (order.status == 'ready') {
+                        nextStatus = 'pickedUp';
                       }
                       ref
                           .read(orderControllerProvider.notifier)
@@ -367,26 +367,26 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
     );
   }
 
-  Color _getStatusColor(OrderStatus status) {
+  Color _getStatusColor(String status) {
     switch (status) {
-      case OrderStatus.pending:
+      case 'pending':
         return Colors.orange;
-      case OrderStatus.cooking:
+      case 'cooking':
         return Colors.blue;
-      case OrderStatus.ready:
+      case 'ready':
         return Colors.green;
       default:
         return Colors.grey;
     }
   }
 
-  String _getActionText(OrderStatus status) {
+  String _getActionText(String status) {
     switch (status) {
-      case OrderStatus.pending:
+      case 'pending':
         return "Start Cooking";
-      case OrderStatus.cooking:
+      case 'cooking':
         return "Mark Ready";
-      case OrderStatus.ready:
+      case 'ready':
         return "Handover to Driver";
       default:
         return "Close";

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
-import 'package:rescueeats/features/providers/cartNotifier.dart';
-import 'package:rescueeats/features/widgets/cartScreen.dart';
 import 'package:rescueeats/screens/restaurant/restaurantDetailScreen.dart';
 
 class CustomerHomeTab extends ConsumerWidget {
@@ -10,8 +8,6 @@ class CustomerHomeTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartItems = ref.watch(cartProvider);
-
     final hour = DateTime.now().hour;
     String greeting = "Good Morning";
     if (hour > 12) greeting = "Good Afternoon";
@@ -70,41 +66,14 @@ class CustomerHomeTab extends ConsumerWidget {
               ],
             ),
             actions: [
-              Stack(
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.shopping_bag_outlined,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (c) => const CartScreen()),
-                      );
-                    },
-                  ),
-                  if (cartItems.isNotEmpty)
-                    Positioned(
-                      right: 8,
-                      top: 8,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ), // Orange Badge
-                        child: Text(
-                          "${cartItems.length}",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+              IconButton(
+                icon: const Icon(
+                  Icons.notifications_outlined,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  // TODO: Navigate to notifications
+                },
               ),
               const SizedBox(width: 8),
             ],

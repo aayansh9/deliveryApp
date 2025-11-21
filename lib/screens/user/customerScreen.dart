@@ -5,6 +5,8 @@ import 'package:rescueeats/core/model/orderModel.dart';
 import 'package:rescueeats/screens/order/orderLogic.dart';
 import 'package:rescueeats/screens/user/customerHomeTab.dart';
 import 'package:rescueeats/screens/user/profileScreen.dart';
+import 'package:rescueeats/screens/user/cancellationScreen.dart';
+import 'package:rescueeats/screens/user/gameScreen.dart';
 
 class CustomerDashboard extends StatefulWidget {
   const CustomerDashboard({super.key});
@@ -18,6 +20,8 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
 
   final List<Widget> _pages = [
     const CustomerHomeTab(),
+    const CancellationScreen(),
+    const GameScreen(),
     const CustomerOrdersTab(),
     const CustomerProfileScreen(),
   ];
@@ -48,6 +52,22 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                 color: AppColors.primary,
               ), // Orange
               label: 'Explore',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.cancel_presentation_outlined),
+              selectedIcon: Icon(
+                Icons.cancel_presentation,
+                color: AppColors.primary,
+              ),
+              label: 'Cancel',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.games_outlined),
+              selectedIcon: Icon(
+                Icons.games,
+                color: AppColors.primary,
+              ),
+              label: 'Game',
             ),
             NavigationDestination(
               icon: Icon(Icons.receipt_long_outlined),
@@ -158,7 +178,7 @@ class CustomerOrdersTab extends ConsumerWidget {
           children: [
             Expanded(
               child: Text(
-                order.restaurantName,
+                order.restaurantId, // Using ID as name for now
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -203,7 +223,7 @@ class CustomerOrdersTab extends ConsumerWidget {
 
         // Items
         Text(
-          order.items.join(" • "),
+          order.items.map((e) => "${e.quantity}x ${e.menuId}").join(" • "),
           style: TextStyle(color: Colors.grey[700], fontSize: 14),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -231,8 +251,8 @@ class CustomerOrdersTab extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 12),
-            if (order.status != OrderStatus.delivered &&
-                order.status != OrderStatus.cancelled)
+            if (order.status != 'delivered' &&
+                order.status != 'cancelled')
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {},
@@ -257,25 +277,28 @@ class CustomerOrdersTab extends ConsumerWidget {
     );
   }
 
-  Widget _buildSimpleStatus(OrderStatus status) {
+  Widget _buildSimpleStatus(String status) {
     Color color;
-    String text = status.name[0].toUpperCase() + status.name.substring(1);
+    String text = status.toUpperCase();
 
-    switch (status) {
-      case OrderStatus.pending:
+    switch (status.toLowerCase()) {
+      case 'pending':
         color = Colors.orange;
         break;
-      case OrderStatus.cooking:
+      case 'preparing':
         color = Colors.blue;
         break;
-      case OrderStatus.ready:
+      case 'ready':
         color = Colors.purple;
         break;
-      case OrderStatus.pickedUp:
+      case 'out_for_delivery':
         color = Colors.indigo;
         break;
-      case OrderStatus.delivered:
+      case 'delivered':
         color = Colors.green;
+        break;
+      case 'cancelled':
+        color = Colors.red;
         break;
       default:
         color = Colors.grey;

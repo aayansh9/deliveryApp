@@ -24,17 +24,19 @@ class UserModel extends Equatable {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      phoneNumber: json['phoneNumber'] as String?,
+      id: (json['_id'] ?? json['id'] ?? '') as String,
+      name: (json['name'] ?? '') as String,
+      email: (json['email'] ?? '') as String,
+      phoneNumber: (json['phone'] ?? json['phoneNumber']) as String?,
       profileImage: json['profileImage'] as String?,
       // 3. Parse the role from JSON
       role: UserRole.values.firstWhere(
         (e) => e.name == (json['role'] ?? 'user'),
         orElse: () => UserRole.user,
       ),
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: json['createdAt'] != null 
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(),
     );
   }
 

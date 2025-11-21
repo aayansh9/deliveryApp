@@ -37,7 +37,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             backgroundColor: Colors.red,
           ),
         );
-        ref.read(authProvider.notifier).clearError();
       }
     });
 
@@ -225,6 +224,59 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // OR Divider
+                      Row(
+                        children: [
+                          const Expanded(child: Divider(color: Colors.black26)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              'OR',
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const Expanded(child: Divider(color: Colors.black26)),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Google Sign-In Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: OutlinedButton.icon(
+                          onPressed: isLoading
+                              ? null
+                              : () {
+                                  ref.read(authProvider.notifier).loginWithGoogle();
+                                },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.black26, width: 1.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          icon: Image.network(
+                            'https://www.google.com/favicon.ico',
+                            height: 24,
+                            width: 24,
+                          ),
+                          label: const Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
