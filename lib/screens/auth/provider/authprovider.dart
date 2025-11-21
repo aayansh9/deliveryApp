@@ -1,15 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/model/userModel.dart';
 import 'package:rescueeats/screens/auth/provider/authstate.dart';
-
 import 'package:rescueeats/core/services/api_service.dart';
-import 'package:rescueeats/core/services/google_auth_service.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final ApiService _apiService;
-  final GoogleAuthService _googleAuthService;
 
-  AuthNotifier(this._apiService, this._googleAuthService) : super(const AuthState());
+  AuthNotifier(this._apiService) : super(const AuthState());
 
   Future<void> login({
     required String emailOrPhone,
@@ -75,56 +72,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> loginWithGoogle() async {
-    state = state.copyWith(status: AuthStatus.loading);
 
-    try {
-      final idToken = await _googleAuthService.signInWithGoogle();
-      
-      if (idToken == null) {
-        // User cancelled
-        state = state.copyWith(status: AuthStatus.unauthenticated);
-        return;
-      }
-
-      // Default to user role for login
-      final user = await _apiService.googleAuth(idToken, UserRole.user);
-      state = state.copyWith(status: AuthStatus.authenticated, user: user);
-    } catch (e) {
-      state = state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: e.toString().replaceAll('Exception: ', ''),
-      );
-    }
-  }
-
-  Future<void> registerWithGoogle(UserRole role) async {
-    state = state.copyWith(status: AuthStatus.loading);
-
-    try {
-      final idToken = await _googleAuthService.signInWithGoogle();
-      
-      if (idToken == null) {
-        // User cancelled
-        state = state.copyWith(status: AuthStatus.unauthenticated);
-        return;
-      }
-
-      final user = await _apiService.googleAuth(idToken, role);
-      state = state.copyWith(status: AuthStatus.authenticated, user: user);
-    } catch (e) {
-      state = state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: e.toString().replaceAll('Exception: ', ''),
-      );
-    }
-  }
 
   Future<void> logout() async {
     state = state.copyWith(status: AuthStatus.loading);
     try {
       await Future.delayed(const Duration(seconds: 1));
-      await _googleAuthService.signOut();
       state = const AuthState(status: AuthStatus.unauthenticated);
     } catch (e) {
       state = state.copyWith(
@@ -140,7 +93,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(ApiService(), GoogleAuthService());
+  return AuthNotifier(ApiService());
 });
 
 final currentUserProvider = Provider<UserModel?>((ref) {

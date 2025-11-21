@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
 import 'package:rescueeats/core/model/orderModel.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/screens/order/orderLogic.dart';
 import 'package:rescueeats/screens/user/customerHomeTab.dart';
 import 'package:rescueeats/screens/user/profileScreen.dart';
@@ -155,7 +156,7 @@ class CustomerOrdersTab extends ConsumerWidget {
             ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(context.padding.medium),
             itemCount: sortedOrders.length,
             separatorBuilder: (context, index) => const SizedBox(height: 24),
             itemBuilder: (context, index) {

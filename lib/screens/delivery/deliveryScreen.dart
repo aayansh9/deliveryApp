@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
 import 'package:rescueeats/core/model/orderModel.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/routes/routeconstants.dart';
 import 'package:rescueeats/screens/auth/provider/authprovider.dart';
 import 'package:rescueeats/screens/order/orderLogic.dart';
@@ -172,7 +173,7 @@ class DeliveryDashboard extends ConsumerWidget {
 
                     return ListView(
                       controller: scrollController,
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(context.padding.medium),
                       children: [
                         Center(
                           child: Container(
@@ -222,6 +223,7 @@ class DeliveryDashboard extends ConsumerWidget {
                         else
                           ...deliveryTasks.map(
                             (order) => _buildModernDeliveryCard(
+                              context,
                               restaurant: order.restaurantId, // Using ID as name
                               distance: "2.4 km",
                               price:
@@ -265,7 +267,8 @@ class DeliveryDashboard extends ConsumerWidget {
     return Container(); // Placeholder for path
   }
 
-  Widget _buildModernDeliveryCard({
+  Widget _buildModernDeliveryCard(
+    BuildContext context, {
     required String restaurant,
     required String distance,
     required String price,
@@ -274,7 +277,7 @@ class DeliveryDashboard extends ConsumerWidget {
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(context.padding.medium),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),

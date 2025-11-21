@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
@@ -28,23 +29,23 @@ class GameScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.games_outlined,
-              size: 64,
+              size: context.sizes.iconExtraLarge,
               color: AppColors.primary.withOpacity(0.5),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: context.spacing.medium),
+            Text(
               "Coming Soon!",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: context.text.h2,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: context.spacing.small),
+            Text(
               "Play games to earn rewards.",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: context.text.bodyMedium,
                 color: Colors.grey,
               ),
             ),

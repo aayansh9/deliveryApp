@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
 import 'package:rescueeats/core/model/menuModel.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/providers/cartNotifier.dart';
 
 class RestaurantMenuScreen extends ConsumerWidget {
@@ -19,7 +20,7 @@ class RestaurantMenuScreen extends ConsumerWidget {
         elevation: 0,
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(context.padding.medium),
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
           final item = menuItems[index];
@@ -27,8 +28,8 @@ class RestaurantMenuScreen extends ConsumerWidget {
             margin: const EdgeInsets.only(bottom: 16),
             child: ListTile(
               leading: Container(
-                width: 60,
-                height: 60,
+                width: context.isMobile ? 60 : 70,
+                height: context.isMobile ? 60 : 70,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(

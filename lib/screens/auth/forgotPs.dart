@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -51,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
           child: _isSent ? _buildSuccessView() : _buildInputView(),
         ),
       ),
@@ -113,7 +114,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           const SizedBox(height: 30),
           SizedBox(
             width: double.infinity,
-            height: 56,
+            height: context.sizes.buttonHeight,
             child: ElevatedButton(
               onPressed: _isLoading ? null : _handleResetPassword,
               style: ElevatedButton.styleFrom(
@@ -174,7 +175,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         const SizedBox(height: 40),
         SizedBox(
           width: double.infinity,
-          height: 56,
+          height: context.sizes.buttonHeight,
           child: ElevatedButton(
             onPressed: () => context.pop(), // Go back to login
             style: ElevatedButton.styleFrom(

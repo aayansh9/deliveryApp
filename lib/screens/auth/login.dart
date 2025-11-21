@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/routes/routeconstants.dart';
 import 'package:rescueeats/screens/auth/provider/authprovider.dart';
 import 'package:rescueeats/screens/auth/provider/authstate.dart';
@@ -46,14 +47,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: [
-                      const SizedBox(height: 40),
+                      SizedBox(height: context.spacing.large),
                       Container(
-                        height: 280,
+                        height: context.isShortScreen 
+                            ? context.heightPercent(25) 
+                            : context.heightPercent(30),
+                        constraints: BoxConstraints(
+                          maxHeight: 280,
+                          minHeight: 180,
+                        ),
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(
@@ -63,21 +70,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
-                      const Text(
+                      SizedBox(height: context.spacing.medium),
+                      Text(
                         'Welcome Back',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: context.text.h1,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
+                      SizedBox(height: context.spacing.small),
+                      Text(
                         'Log into your existing Account',
-                        style: TextStyle(fontSize: 15, color: Colors.black54),
+                        style: TextStyle(
+                          fontSize: context.text.bodyMedium,
+                          color: Colors.black54,
+                        ),
                       ),
-                      const SizedBox(height: 40),
+                      SizedBox(height: context.spacing.large),
 
                       TextFormField(
                         controller: _emailController,
@@ -90,15 +100,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: 'Email or Phone Number',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             color: Colors.black54,
-                            fontSize: 16,
+                            fontSize: context.text.bodyMedium,
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 18,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: context.padding.medium,
+                            vertical: context.isMobile ? 16 : 18,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -123,7 +133,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.spacing.medium),
 
                       TextFormField(
                         controller: _passwordController,
@@ -137,15 +147,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         },
                         decoration: InputDecoration(
                           hintText: 'Password',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             color: Colors.black54,
-                            fontSize: 16,
+                            fontSize: context.text.bodyMedium,
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 18,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: context.padding.medium,
+                            vertical: context.isMobile ? 16 : 18,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -170,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: context.spacing.small),
 
                       Align(
                         alignment: Alignment.center,
@@ -181,20 +191,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   // Navigate to Forgot Password
                                   context.push(RouteConstants.forgotPassword);
                                 },
-                          child: const Text(
+                          child: Text(
                             'Forgot password?',
                             style: TextStyle(
                               color: Colors.black87,
-                              fontSize: 14,
+                              fontSize: context.text.bodyMedium,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.spacing.medium),
 
                       SizedBox(
                         width: double.infinity,
-                        height: 56,
+                        height: context.sizes.buttonHeight,
                         child: ElevatedButton(
                           onPressed: isLoading
                               ? null
@@ -217,10 +227,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             elevation: 0,
                           ),
-                          child: const Text(
+                          child: Text(
                             'LOGIN',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: context.text.bodyMedium,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               letterSpacing: 1,
@@ -228,68 +238,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
-
-                      // OR Divider
-                      Row(
-                        children: [
-                          const Expanded(child: Divider(color: Colors.black26)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              'OR',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          const Expanded(child: Divider(color: Colors.black26)),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Google Sign-In Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: OutlinedButton.icon(
-                          onPressed: isLoading
-                              ? null
-                              : () {
-                                  ref.read(authProvider.notifier).loginWithGoogle();
-                                },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.black26, width: 1.5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          icon: Image.network(
-                            'https://www.google.com/favicon.ico',
-                            height: 24,
-                            width: 24,
-                          ),
-                          label: const Text(
-                            'Continue with Google',
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: context.spacing.medium),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             "Don't have an Account? ",
                             style: TextStyle(
                               color: Colors.black87,
-                              fontSize: 14,
+                              fontSize: context.text.bodyMedium,
                             ),
                           ),
                           GestureDetector(
@@ -298,18 +255,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 : () {
                                     context.go(RouteConstants.register);
                                   },
-                            child: const Text(
+                            child: Text(
                               'Sign Up',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: context.text.bodyMedium,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: context.spacing.large),
                     ],
                   ),
                 ),

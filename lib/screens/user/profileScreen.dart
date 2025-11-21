@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/routes/routeconstants.dart';
 import 'package:rescueeats/screens/auth/provider/authprovider.dart';
 
@@ -28,7 +29,7 @@ class CustomerProfileScreen extends ConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.symmetric(horizontal: context.padding.medium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

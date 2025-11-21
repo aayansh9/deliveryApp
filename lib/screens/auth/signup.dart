@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rescueeats/core/model/userModel.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/routes/routeconstants.dart';
 import 'package:rescueeats/screens/auth/provider/authprovider.dart';
 import 'package:rescueeats/screens/auth/provider/authstate.dart';
@@ -55,26 +56,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: [
-                      const SizedBox(height: 40),
-                      const Text(
+                      SizedBox(height: context.spacing.large),
+                      Text(
                         "Let's Get Started",
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: context.text.h1,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
+                      SizedBox(height: context.spacing.small),
+                      Text(
                         'Create an Account',
-                        style: TextStyle(fontSize: 15, color: Colors.black54),
+                        style: TextStyle(
+                          fontSize: context.text.bodyMedium,
+                          color: Colors.black54,
+                        ),
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: context.spacing.medium),
 
                       // Role Selector
                       IgnorePointer(
@@ -131,7 +135,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.spacing.medium),
                       _buildTextField(
                         controller: _nameController,
                         hint: 'Name',
@@ -170,12 +174,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             : null,
                       ),
 
-                      const SizedBox(height: 30),
+                      SizedBox(height: context.spacing.large),
 
                       // Sign Up Button
                       SizedBox(
                         width: double.infinity,
-                        height: 56,
+                        height: context.sizes.buttonHeight,
                         child: ElevatedButton(
                           onPressed: isLoading
                               ? null
@@ -212,60 +216,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
-
-                      // OR Divider
-                      Row(
-                        children: [
-                          const Expanded(child: Divider(color: Colors.black26)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              'OR',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          const Expanded(child: Divider(color: Colors.black26)),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Google Sign-In Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: OutlinedButton.icon(
-                          onPressed: isLoading
-                              ? null
-                              : () {
-                                  ref.read(authProvider.notifier).registerWithGoogle(_selectedRole);
-                                },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.black26, width: 1.5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          icon: Image.network(
-                            'https://www.google.com/favicon.ico',
-                            height: 24,
-                            width: 24,
-                          ),
-                          label: const Text(
-                            'Continue with Google',
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: context.spacing.medium),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -281,7 +232,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: context.spacing.large),
                     ],
                   ),
                 ),

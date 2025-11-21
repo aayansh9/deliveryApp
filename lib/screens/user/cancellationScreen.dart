@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 
 class CancellationScreen extends StatelessWidget {
   const CancellationScreen({super.key});
@@ -28,7 +29,7 @@ class CancellationScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.cancel_presentation_outlined,
-              size: 64,
+              size: context.sizes.iconExtraLarge,
               color: Colors.grey[300],
             ),
             const SizedBox(height: 16),

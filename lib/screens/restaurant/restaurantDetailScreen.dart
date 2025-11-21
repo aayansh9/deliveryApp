@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   final String restaurantId;
@@ -29,7 +30,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         slivers: [
           // 1. Header Image (Standard Hero)
           SliverAppBar(
-            expandedHeight: 200.0,
+            expandedHeight: context.isMobile ? 200.0 : 250.0,
             floating: false,
             pinned: true,
             backgroundColor: Colors.white,
@@ -75,19 +76,19 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           // 2. Restaurant Info (Distinct Card Style)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(context.padding.medium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.restaurantName ?? "Burger King",
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight:
-                          FontWeight.w900, // Heavier font for distinct look
-                      letterSpacing: -0.5,
-                      height: 1.1,
-                    ),
+                    style: TextStyle(
+                    fontSize: context.text.h1,
+                    fontWeight:
+                        FontWeight.w900, // Heavier font for distinct look
+                    letterSpacing: -0.5,
+                    height: 1.1,
+                  ),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -166,11 +167,14 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  const Text(
-                    "Menu",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                  SizedBox(height: context.spacing.section),
+                Text(
+                  "Menu",
+                  style: TextStyle(
+                    fontSize: context.text.h3,
+                    fontWeight: FontWeight.w800,
                   ),
+                ),
                 ],
               ),
             ),
@@ -178,7 +182,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
 
           // 3. Menu Items (Text Only, No Images)
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: context.padding.medium),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
                 return _buildTextOnlyMenuItem(index);
@@ -192,7 +196,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
 
       // 4. Floating Cart Button
       floatingActionButton: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: context.widthPercent(90),
+        constraints: BoxConstraints(
+          maxWidth: 600,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: FloatingActionButton.extended(
           onPressed: () {},

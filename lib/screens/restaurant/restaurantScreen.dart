@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
 import 'package:rescueeats/core/model/orderModel.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/routes/routeconstants.dart';
 import 'package:rescueeats/screens/auth/provider/authprovider.dart';
 import 'package:rescueeats/screens/order/orderLogic.dart';
@@ -195,7 +196,7 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(context.padding.medium),
       itemCount: orders.length,
       separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemBuilder: (context, index) => _buildModernKitchenTicket(orders[index]),
@@ -260,7 +261,7 @@ class _RestaurantDashboardState extends ConsumerState<RestaurantDashboard>
 
           // Ticket Body
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(context.padding.medium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
 import 'package:rescueeats/core/model/orderModel.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/features/providers/cartNotifier.dart';
 import 'package:rescueeats/screens/order/orderLogic.dart';
 
@@ -26,7 +27,7 @@ class CartScreen extends ConsumerWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(context.padding.medium),
                     itemCount: cartItems.length,
                     itemBuilder: (context, index) {
                       final item = cartItems[index];
@@ -48,8 +49,8 @@ class CartScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
                                 item.menuItem.imageUrl,
-                                width: 50,
-                                height: 50,
+                                width: context.isMobile ? 50 : 60,
+                                height: context.isMobile ? 50 : 60,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -72,7 +73,7 @@ class CartScreen extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(context.padding.medium),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -106,10 +107,10 @@ class CartScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: context.spacing.medium),
                       SizedBox(
                         width: double.infinity,
-                        height: 56,
+                        height: context.sizes.buttonHeight,
                         child: ElevatedButton(
                           onPressed: () {
                             final order = OrderModel(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rescueeats/core/appTheme/appColors.dart';
+import 'package:rescueeats/core/utils/responsive_utils.dart';
 import 'package:rescueeats/screens/restaurant/restaurantDetailScreen.dart';
 
 class CustomerHomeTab extends ConsumerWidget {
@@ -31,9 +32,9 @@ class CustomerHomeTab extends ConsumerWidget {
               children: [
                 Text(
                   greeting,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 12,
+                    fontSize: context.text.bodySmall,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -47,11 +48,11 @@ class CustomerHomeTab extends ConsumerWidget {
                       color: AppColors.primary,
                     ), // Orange
                     const SizedBox(width: 4),
-                    const Text(
+                    Text(
                       "Lazimpat, Kathmandu",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 14,
+                        fontSize: context.text.bodyMedium,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -80,20 +81,28 @@ class CustomerHomeTab extends ConsumerWidget {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(60),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                padding: EdgeInsets.fromLTRB(
+                  context.padding.horizontal,
+                  0,
+                  context.padding.horizontal,
+                  context.spacing.small,
+                ),
                 child: Container(
-                  height: 48,
+                  height: context.isMobile ? 48 : 52,
                   decoration: BoxDecoration(
                     color: const Color(0xFFF5F5F5),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const TextField(
+                  child: TextField(
                     decoration: InputDecoration(
                       hintText: "Search 'Momo', 'Pizza'...",
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: context.text.bodyMedium,
+                      ),
+                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(vertical: 14),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                   ),
                 ),
@@ -105,40 +114,45 @@ class CustomerHomeTab extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.medium),
                 // Categories
                 SizedBox(
-                  height: 110,
+                  height: context.isMobile ? 110 : 120,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                     children: [
                       _buildSquareCategory(
+                        context,
                         "Offers",
                         "50% Off",
                         Icons.local_offer,
                         Colors.red,
                       ),
                       _buildSquareCategory(
+                        context,
                         "Momo",
                         "Hot",
                         Icons.rice_bowl,
                         AppColors.primary,
                       ), // Orange
                       _buildSquareCategory(
+                        context,
                         "Burger",
                         "Juicy",
                         Icons.lunch_dining,
                         Colors.brown,
                       ),
                       _buildSquareCategory(
+                        context,
                         "Pizza",
                         "Cheesy",
                         Icons.local_pizza,
                         Colors.blue,
                       ),
                       _buildSquareCategory(
+                        context,
                         "Healthy",
                         "Fresh",
                         Icons.eco,
@@ -147,23 +161,27 @@ class CustomerHomeTab extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                SizedBox(height: context.spacing.section),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                   child: Text(
                     "Special Offers",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: context.text.h3,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.medium),
                 SizedBox(
-                  height: 180,
+                  height: context.isMobile ? 180 : 200,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                     children: [
                       _buildMagazinePromo(
+                        context: context,
                         title: "Momo\nMadness",
                         subtitle: "Flat Rs. 100 Off",
                         color: AppColors.primary, // Orange
@@ -172,6 +190,7 @@ class CustomerHomeTab extends ConsumerWidget {
                       ),
                       const SizedBox(width: 16),
                       _buildMagazinePromo(
+                        context: context,
                         title: "Free\nDelivery",
                         subtitle: "All Weekend",
                         color: const Color(0xFF1E3A5F),
@@ -181,29 +200,32 @@ class CustomerHomeTab extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
-                _buildSectionHeader("Curated For You", "View All"),
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.section),
+                _buildSectionHeader(context, "Curated For You", "View All"),
+                SizedBox(height: context.spacing.medium),
                 SizedBox(
-                  height: 200,
+                  height: context.isMobile ? 200 : 220,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                     physics: const BouncingScrollPhysics(),
                     children: [
                       _buildPortraitCollection(
+                        context,
                         "Budget Eats",
                         "Under Rs. 300",
                         "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
                       ),
                       const SizedBox(width: 16),
                       _buildPortraitCollection(
+                        context,
                         "Top Rated",
                         "4.5+ Stars",
                         "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400",
                       ),
                       const SizedBox(width: 16),
                       _buildPortraitCollection(
+                        context,
                         "New & Hot",
                         "Try now",
                         "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400",
@@ -211,16 +233,16 @@ class CustomerHomeTab extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: context.spacing.section),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "All Restaurants",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: context.text.h3,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -234,11 +256,11 @@ class CustomerHomeTab extends ConsumerWidget {
                           color: AppColors.primary.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Text(
+                        child: Text(
                           "142 near you",
                           style: TextStyle(
                             color: AppColors.primary, // Orange Text
-                            fontSize: 12,
+                            fontSize: context.text.bodySmall,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -246,12 +268,12 @@ class CustomerHomeTab extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: context.spacing.medium),
               ],
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
                 final restaurants = [
@@ -308,15 +330,18 @@ class CustomerHomeTab extends ConsumerWidget {
   }
 
   // --- UI HELPERS ---
-  Widget _buildSectionHeader(String title, String action) {
+  Widget _buildSectionHeader(BuildContext context, String title, String action) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: context.padding.horizontal),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: context.text.h3,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             action,
@@ -331,28 +356,33 @@ class CustomerHomeTab extends ConsumerWidget {
   }
 
   Widget _buildSquareCategory(
+    BuildContext context,
     String name,
     String sub,
     IconData icon,
     Color color,
   ) {
+    final size = context.sizes.categoryCardSize;
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
+      padding: EdgeInsets.only(right: context.spacing.medium),
       child: Column(
         children: [
           Container(
-            width: 70,
-            height: 70,
+            width: size,
+            height: size,
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Icon(icon, color: color, size: 32),
+            child: Icon(icon, color: color, size: context.isMobile ? 28 : 32),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: context.spacing.small),
           Text(
             name,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: context.text.bodySmall,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             sub,
@@ -368,13 +398,14 @@ class CustomerHomeTab extends ConsumerWidget {
   }
 
   Widget _buildMagazinePromo({
+    required BuildContext context,
     required String title,
     required String subtitle,
     required Color color,
     required String image,
   }) {
     return Container(
-      width: 300,
+      width: context.sizes.promoCardWidth,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: Colors.black,
@@ -455,12 +486,13 @@ class CustomerHomeTab extends ConsumerWidget {
   }
 
   Widget _buildPortraitCollection(
+    BuildContext context,
     String title,
     String subtitle,
     String imageUrl,
   ) {
     return Container(
-      width: 150,
+      width: context.sizes.collectionCardWidth,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.grey[200],
@@ -539,11 +571,13 @@ class CustomerHomeTab extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
                       imageUrl,
-                      height: 180,
+                      height: context.sizes.cardImageHeight,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      errorBuilder: (c, e, s) =>
-                          Container(height: 180, color: Colors.grey[300]),
+                      errorBuilder: (c, e, s) => Container(
+                        height: context.sizes.cardImageHeight,
+                        color: Colors.grey[300],
+                      ),
                     ),
                   ),
                 ),
@@ -610,8 +644,8 @@ class CustomerHomeTab extends ConsumerWidget {
                   child: Text(
                     name,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 20,
+                    style: TextStyle(
+                      fontSize: context.text.h3,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -643,9 +677,15 @@ class CustomerHomeTab extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
-            Text(tags, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-            const SizedBox(height: 12),
+            SizedBox(height: context.spacing.small),
+            Text(
+              tags,
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: context.text.bodyMedium,
+              ),
+            ),
+            SizedBox(height: context.spacing.small),
             Row(
               children: [
                 _buildTagChip(deliveryFee, Icons.delivery_dining, Colors.blue),
